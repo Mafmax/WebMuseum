@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Входные данные не являются действительной строкой Base-64, поскольку содержат символ в кодировке, отличной от Base 64, больше двух символов заполнения или недопустимый символ среди символов заполнения. </title>
+        <meta name="viewport" content="width=device-width" />
+        <style>
+         body {font-family:"Verdana";font-weight:normal;font-size: .7em;color:black;} 
+         p {font-family:"Verdana";font-weight:normal;color:black;margin-top: -5px}
+         b {font-family:"Verdana";font-weight:bold;color:black;margin-top: -5px}
+         H1 { font-family:"Verdana";font-weight:normal;font-size:18pt;color:red }
+         H2 { font-family:"Verdana";font-weight:normal;font-size:14pt;color:maroon }
+         pre {font-family:"Consolas","Lucida Console",Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}
+         .marker {font-weight: bold; color: black;text-decoration: none;}
+         .version {color: gray;}
+         .error {margin-bottom: 10px;}
+         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:pointer; }
+         @media screen and (max-width: 639px) {
+          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }
+         }
+         @media screen and (max-width: 479px) {
+          pre { width: 280px; }
+         }
+        </style>
+    </head>
+
+    <body bgcolor="white">
+
+            <span><H1>Ошибка сервера в приложении '/MuseumWeb'.<hr width=100% size=1 color=silver></H1>
+
+            <h2> <i>Входные данные не являются действительной строкой Base-64, поскольку содержат символ в кодировке, отличной от Base 64, больше двух символов заполнения или недопустимый символ среди символов заполнения. </i> </h2></span>
+
+            <font face="Arial, Helvetica, Geneva, SunSans-Regular, sans-serif ">
+
+            <b> Описание: </b>Необработанное исключение при выполнении текущего веб-запроса. Изучите трассировку стека для получения дополнительных сведений о данной ошибке и о вызвавшем ее фрагменте кода.
+
+            <br><br>
+
+            <b> Сведения об исключении: </b>System.FormatException: Входные данные не являются действительной строкой Base-64, поскольку содержат символ в кодировке, отличной от Base 64, больше двух символов заполнения или недопустимый символ среди символов заполнения. <br><br>
+
+            <b>Ошибка источника:</b> <br><br>
+
+            <table width=100% bgcolor="#ffffcc">
+               <tr>
+                  <td>
+                      <code><pre>
+
+Строка 32:             }
+Строка 33:             
+<font color=red>Строка 34:             Response.BinaryWrite(Convert.FromBase64String(response));
+</font>Строка 35: 
+Строка 36:         }</pre>                      </code>
+
+                  </td>
+               </tr>
+            </table>
+
+            <br>
+
+            <b> Исходный файл: </b> C:\workspace\VisualStudioProjects\C# Projects\ASP.NET\MuseumWeb\MuseumWeb\Processing.aspx.cs<b> &nbsp;&nbsp; Строка: </b> 34
+            <br><br>
+
+            <b>Трассировка стека:</b> <br><br>
+
+            <table width=100% bgcolor="#ffffcc">
+               <tr>
+                  <td>
+                      <code><pre>
+
+[FormatException: Входные данные не являются действительной строкой Base-64, поскольку содержат символ в кодировке, отличной от Base 64, больше двух символов заполнения или недопустимый символ среди символов заполнения. ]
+   System.Convert.FromBase64_ComputeResultLength(Char* inputPtr, Int32 inputLength) +14407534
+   System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength) +71
+   System.Convert.FromBase64String(String s) +50
+   MuseumWeb.Processing.Page_Load(Object sender, EventArgs e) in C:\workspace\VisualStudioProjects\C# Projects\ASP.NET\MuseumWeb\MuseumWeb\Processing.aspx.cs:34
+   System.Web.UI.Control.OnLoad(EventArgs e) +108
+   System.Web.UI.Control.LoadRecursive() +90
+   System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint) +1607
+</pre>                      </code>
+
+                  </td>
+               </tr>
+            </table>
+
+            <br>
+
+            <hr width=100% size=1 color=silver>
+
+            <b>Информация о версии:</b>&nbsp;Платформа Microsoft .NET Framework, версия:4.0.30319; ASP.NET, версия:4.8.3928.0
+
+            </font>
+
+    </body>
+</html>
+<!-- 
+[FormatException]: Входные данные не являются действительной строкой Base-64, поскольку содержат символ в кодировке, отличной от Base 64, больше двух символов заполнения или недопустимый символ среди символов заполнения. 
+   в System.Convert.FromBase64_ComputeResultLength(Char* inputPtr, Int32 inputLength)
+   в System.Convert.FromBase64CharPtr(Char* inputPtr, Int32 inputLength)
+   в System.Convert.FromBase64String(String s)
+   в MuseumWeb.Processing.Page_Load(Object sender, EventArgs e) в C:\workspace\VisualStudioProjects\C# Projects\ASP.NET\MuseumWeb\MuseumWeb\Processing.aspx.cs:строка 34
+   в System.Web.UI.Control.OnLoad(EventArgs e)
+   в System.Web.UI.Control.LoadRecursive()
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+[HttpUnhandledException]: Выдано исключение типа &quot;System.Web.HttpUnhandledException&quot;.
+   в System.Web.UI.Page.HandleError(Exception e)
+   в System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+   в System.Web.UI.Page.ProcessRequest()
+   в System.Web.UI.Page.ProcessRequest(HttpContext context)
+   в ASP.processing_aspx.ProcessRequest(HttpContext context)
+   в System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   в System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   в System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+-->

@@ -19,7 +19,6 @@ public class LabelMove : MonoBehaviour
     {
         label = transform;
         startPosition = transform.position;
-        Debug.LogError(label.forward);
     }
 
     // Update is called once per frame

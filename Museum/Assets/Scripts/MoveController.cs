@@ -5,19 +5,20 @@ using UnityEngine;
 public class MoveController : MonoBehaviour
 {
     public float sensitivity = 1f;
-    
+
     public float minimumVert = -45.0f;
     public float maximumVert = 45.0f;
+    public Texture2D cursorTex;
 
     private float _rotationX = 0;
     private CharacterController controller;
     private float playerSpeed = 20.0f;
     private Camera mainCam;
-    
+    private Vector2 mousePosition;
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+   
         controller = gameObject.AddComponent<CharacterController>();
         mainCam = Camera.main;
     }
@@ -25,6 +26,10 @@ public class MoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!InterfaceController.Menus["GameMenu".ToLower()].GetComponent<Menu>().IsOpen())
+        {
+            return;
+        }
 
         _rotationX -= Input.GetAxis("Mouse Y") * sensitivity;
         _rotationX = Mathf.Clamp(_rotationX, minimumVert, maximumVert);
@@ -37,4 +42,5 @@ public class MoveController : MonoBehaviour
         controller.Move(leftRightMove * Input.GetAxis("Horizontal") * Time.deltaTime * playerSpeed);
 
     }
+
 }
