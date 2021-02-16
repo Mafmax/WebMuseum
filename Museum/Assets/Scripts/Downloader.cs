@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,9 +15,26 @@ public class Downloader : MonoBehaviour
     public static bool ready => picReady && admReady;
     private static bool picReady = false;
     private static bool admReady = false;
+    private string connectionString;
+    private static string RemoveServerComment(string data)
+    {
+        string newData = data;
+
+        var regex = Regex.Match(data, @"<!--[^#]*").ToString();
+        if (regex != "")
+        {
+            newData = data.Replace(regex, "");
+        }
+        return newData;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        //  connectionString = "http://localhost/MuseumWeb/Processing.aspx?";
+
+        connectionString = "http://www.avtor.somee.com/Processing.aspx?";
+
+
 
         var frames = GameObject.FindObjectsOfType<PictureFrame>();
 
@@ -24,7 +42,7 @@ public class Downloader : MonoBehaviour
 
         Action<List<Image>> downloadPicturesCallback = (pictures) =>
         {
-            PictureFrame.allImages=pictures;
+            PictureFrame.allImages = pictures;
             for (int i = 0; i < frames.Length; i++)
             {
                 frames[i].FrameNumber = i;
@@ -48,44 +66,45 @@ public class Downloader : MonoBehaviour
         var downloader = FindObjectOfType<Downloader>();
         downloader.DeleteImage(image);
     }
-    public static void ChangeImg(Image image,int newFrame)
+    public static void ChangeImg(Image image, int newFrame)
     {
         var downloader = FindObjectOfType<Downloader>();
-        downloader.ChangeImage(image,newFrame);
+        downloader.ChangeImage(image, newFrame);
 
     }
     public void ChangeImage(Image img, int newFrame)
     {
-        StartCoroutine(ChangeImageCoroutine(img,newFrame));
+        StartCoroutine(ChangeImageCoroutine(img, newFrame));
     }
     private IEnumerator ChangeImageCoroutine(Image img, int newFrame)
     {
-        var request = UnityWebRequest.Get($"http://localhost/MuseumWeb/Processing.aspx?command=change_img&id={img.Id}&number={newFrame}");
+        var request = UnityWebRequest.Get($"{connectionString}command=change_img&id={img.Id}&number={newFrame}");
 
         yield return request.SendWebRequest();
 
 
     }
-    public  void DeleteImage(Image img)
+    public void DeleteImage(Image img)
     {
         StartCoroutine(DeleteImageCoroutine(img));
     }
-    private  IEnumerator DeleteImageCoroutine(Image img)
+    private IEnumerator DeleteImageCoroutine(Image img)
     {
-        var request = UnityWebRequest.Get($"http://localhost/MuseumWeb/Processing.aspx?command=delete_img&id={img.Id}");
+        var request = UnityWebRequest.Get($"{connectionString}command=delete_img&id={img.Id}");
 
         yield return request.SendWebRequest();
 
-        Debug.Log($"Результат удаления: {request.downloadHandler.text}");
     }
     private IEnumerator DownloadAdminData(Action<List<Admin>> adminsCallback)
     {
 
-        var request = UnityWebRequest.Get("http://localhost/MuseumWeb/Processing.aspx?command=get_adm_data");
+        var request = UnityWebRequest.Get($"{connectionString}command=get_adm_data");
         yield return request.SendWebRequest();
+        Debug.LogError($"Полученный текст админы: {request.downloadHandler.text}");
         List<Admin> admins = new List<Admin>();
         var serializer = new DataContractJsonSerializer(typeof(List<Admin>));
-        using (var stream = new MemoryStream(request.downloadHandler.data))
+        var data = Encoding.UTF8.GetBytes(RemoveServerComment(request.downloadHandler.text));
+        using (var stream = new MemoryStream(data))
         {
             admins = serializer.ReadObject(stream) as List<Admin>;
 
@@ -95,16 +114,17 @@ public class Downloader : MonoBehaviour
 
     private IEnumerator DownloadPictures(Action<List<Image>> callback)
     {
-        var request = UnityWebRequest.Get("http://localhost/MuseumWeb/Processing.aspx?command=get_images");
+        var request = UnityWebRequest.Get($"{connectionString}command=get_images");
 
         yield return request.SendWebRequest();
+        Debug.LogError($"Полученный текст картины: {request.downloadHandler.text}");
         if (request.downloadHandler != null)
         {
 
             List<Image> downloadedPictures = new List<Image>();
             var serializer = new DataContractJsonSerializer(typeof(List<Image>));
-
-            using (var stream = new MemoryStream(request.downloadHandler.data))
+            var data = Encoding.UTF8.GetBytes(RemoveServerComment(request.downloadHandler.text));
+            using (var stream = new MemoryStream(data))
             {
                 downloadedPictures = serializer.ReadObject(stream) as List<Image>;
 
@@ -113,6 +133,6 @@ public class Downloader : MonoBehaviour
         }
         request.Dispose();
     }
-  
+
 
 }
